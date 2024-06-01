@@ -7,6 +7,7 @@ namespace banira4649\BetterKillJudgement;
 use banira4649\BetterKillJudgement\event\EventListener;
 use pocketmine\player\Player;
 use pocketmine\plugin\PluginBase;
+use pocketmine\scheduler\ClosureTask;
 use pocketmine\Server;
 
 class Main extends PluginBase{
@@ -30,5 +31,10 @@ class Main extends PluginBase{
 
     public function setDamager(Player $player, Player $damager): void{
         $this->damagerList[$player->getName()] = $damager->getName();
+        $this->getScheduler()->scheduleDelayedTask(new ClosureTask(
+            function () use ($player): void{
+                $this->resetDamager($player);
+            }
+        ), 10 * 20);
     }
 }

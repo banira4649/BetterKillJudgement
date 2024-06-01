@@ -36,6 +36,7 @@ class EventListener implements Listener{
         if(($damager = $this->main->getDamager($entity)) !== null){
             if($entity->isAlive() && $entity->getHealth() - $event->getFinalDamage() <= 0){
                 $event->cancel();
+                $this->main->resetDamager($entity);
                 (new EntityDamageByEntityEvent($damager, $entity, EntityDamageEvent::CAUSE_ENTITY_ATTACK, $event->getFinalDamage()))->call();
             }
         }
