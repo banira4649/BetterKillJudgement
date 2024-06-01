@@ -27,7 +27,7 @@ class EventListener implements Listener{
         $entity = $event->getEntity();
         $damager = $event->getDamager();
         if(!$entity instanceof Player || !$damager instanceof Player) return;
-        if($entity->isAlive() && $entity->getHealth() - $event->getFinalDamage() <= 0){
+        if($entity->isAlive() && $entity->getHealth() - $event->getFinalDamage() > 0){
             $this->main->setDamager($entity, $damager);
         }
     }
