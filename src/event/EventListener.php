@@ -35,11 +35,13 @@ class EventListener implements Listener{
     public function onEntityDamageEvent(EntityDamageEvent $event): void{
         $entity = $event->getEntity();
         if(!$entity instanceof Player) return;
-        if(($damager = $this->main->getDamager($entity)) !== null){
-            if($entity->isAlive() && $entity->getHealth() - $event->getFinalDamage() <= 0){
-                $event->cancel();
-                $this->main->resetDamager($entity);
-                (new EntityDamageByEntityEvent($damager, $entity, EntityDamageEvent::CAUSE_ENTITY_ATTACK, $event->getFinalDamage()))->call();
+        if(!$event instanceof EntityDamageByEntityEvent){
+            if(($damager = $this->main->getDamager($entity)) !== null){
+                if($entity->isAlive() && $entity->getHealth() - $event->getFinalDamage() <= 0){
+                    $event->cancel();
+                    $this->main->resetDamager($entity);
+                    (new EntityDamageByEntityEvent($damager, $entity, EntityDamageEvent::CAUSE_ENTITY_ATTACK, $event->getFinalDamage()))->call();
+                }
             }
         }
     }
