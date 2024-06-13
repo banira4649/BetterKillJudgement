@@ -32,6 +32,8 @@ class Main extends PluginBase{
 
     public function resetDamager(Player $player): void{
         unset($this->damagerList[$player->getName()]);
+        if(isset($this->closureList[$player->getName()])) $this->closureList[$player->getName()]->cancel();
+        unset($this->closureList[$player->getName()]);
     }
 
     public function setDamager(Player $player, Player $damager): void{
