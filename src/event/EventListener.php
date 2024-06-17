@@ -10,6 +10,7 @@ use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\player\Player;
+use pocketmine\scheduler\ClosureTask;
 
 class EventListener implements Listener{
 
@@ -44,5 +45,14 @@ class EventListener implements Listener{
                 }
             }
         }
+    }
+
+    public function onEntityDeath(EntityDamageEvent $event): void{
+        $entity = $event->getEntity();
+        if(!$entity instanceof Player) return;
+        if($event->getCause() !== EntityDamageEvent::CAUSE_VOID) return;
+        if($entity->isAlive() && $entity->getHealth() - $event->getFinalDamage() > 0) return;
+        $pos = $entity->getPosition()->add(0, $entity->getFallDistance(), 0);
+        Main::getInstance()->getScheduler()->scheduleDelayedTask(new ClosureTask(fn() => $entity->isOnline() && $entity->teleport($pos)), 4);
     }
 }

@@ -13,6 +13,7 @@ use pocketmine\Server;
 
 class Main extends PluginBase{
 
+    private static self $instance;
     /**
      * @var string[] $damagerList
      */
@@ -24,6 +25,7 @@ class Main extends PluginBase{
 
     public function onEnable(): void{
         $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
+        self::$instance = $this;
     }
 
     public function getDamager(Player $player): ?Player{
@@ -44,5 +46,9 @@ class Main extends PluginBase{
                 $this->resetDamager($player);
             }
         ), 10 * 20);
+    }
+
+    public static function getInstance(): self{
+        return self::$instance;
     }
 }
