@@ -43,11 +43,13 @@ class EventListener implements Listener{
                     $this->main->resetDamager($entity);
                     (new EntityDamageByEntityEvent($damager, $entity, EntityDamageEvent::CAUSE_ENTITY_ATTACK, $event->getFinalDamage()))->call();
                     if(!class_exists("NeiroNetwork\AlternativeCoreWars\Main")){
-                        $pos = $entity->getPosition()->add(0, $entity->getFallDistance(), 0);
-                        Main::getInstance()->getScheduler()->scheduleDelayedTask(
-                            new ClosureTask(fn() => $entity->isOnline() && $entity->teleport($pos)),
-                            4
-                        );
+                        if($event->getCause() === EntityDamageEvent::CAUSE_VOID){
+                            $pos = $entity->getPosition()->add(0, $entity->getFallDistance(), 0);
+                            Main::getInstance()->getScheduler()->scheduleDelayedTask(
+                                new ClosureTask(fn() => $entity->isOnline() && $entity->teleport($pos)),
+                                4
+                            );
+                        }
                     }
                 }
             }
