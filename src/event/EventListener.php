@@ -39,9 +39,6 @@ class EventListener implements Listener{
         if(!$event instanceof EntityDamageByEntityEvent){
             if(($damager = $this->main->getDamager($entity)) !== null){
                 if($entity->isAlive() && $entity->getHealth() - $event->getFinalDamage() <= 0){
-                    $event->cancel();
-                    $this->main->resetDamager($entity);
-                    (new EntityDamageByEntityEvent($damager, $entity, EntityDamageEvent::CAUSE_ENTITY_ATTACK, $event->getFinalDamage()))->call();
                     if(!class_exists("\NeiroNetwork\AlternativeCoreWars\Main")){
                         if($event->getCause() === EntityDamageEvent::CAUSE_VOID){
                             $pos = $entity->getPosition()->add(0, $entity->getFallDistance(), 0);
@@ -51,6 +48,9 @@ class EventListener implements Listener{
                             );
                         }
                     }
+                    $event->cancel();
+                    $this->main->resetDamager($entity);
+                    (new EntityDamageByEntityEvent($damager, $entity, EntityDamageEvent::CAUSE_ENTITY_ATTACK, $event->getFinalDamage()))->call();
                 }
             }
         }
