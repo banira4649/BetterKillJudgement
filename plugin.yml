@@ -1,6 +1,6 @@
 ---
 name: BetterKillJudgement
-version: 0.0.8
+version: 0.0.9
 main: banira4649\BetterKillJudgement\Main
 api: 5.0.0
 src-namespace-prefix: banira4649\BetterKillJudgement
