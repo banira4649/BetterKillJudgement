@@ -39,7 +39,7 @@ class EventListener implements Listener{
         if(!$event instanceof EntityDamageByEntityEvent){
             if(($damager = $this->main->getDamager($entity)) !== null){
                 if($entity->isAlive() && $entity->getHealth() - $event->getFinalDamage() <= 0){
-                    if(!class_exists("\NeiroNetwork\AlternativeCoreWars\Main")){
+                    if(class_exists("\NeiroNetwork\AlternativeCoreWars\Main")){
                         if($event->getCause() === EntityDamageEvent::CAUSE_VOID){
                             $pos = $entity->getPosition()->add(0, $entity->getFallDistance(), 0);
                             Main::getInstance()->getScheduler()->scheduleDelayedTask(
